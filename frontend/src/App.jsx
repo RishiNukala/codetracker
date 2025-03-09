@@ -6,9 +6,6 @@ import Home from "./Home/Home";
 import Signup from "./Signup/Signup";
 import Login from "./Login/Login";
 import CodingProfiles from "./CodingProfiles/CodingProfiles";
-import GFG from "./Profile/gfg";
-import LeetCode from "./Profile/leetcode";
-import CodeChef from "./Profile/CodeChefProfile";
 import Contests from "./Contests/Contests";
 function AnimatedRoutes() {
   const location = useLocation();
