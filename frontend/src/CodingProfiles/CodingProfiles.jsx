@@ -1,71 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import GFG from "../Profile/gfg";
-import LeetCode from "../Profile/leetcode"; // Assuming you have a LeetCode Profile component
-import CodeChef from "../Profile/CodeChefProfile"; // Assuming you have a CodeChef Profile component
 
 export default function CodingProfiles() {
   const [usernames, setUsernames] = useState({
-    gfg: "rishi_nukala", // Placeholder usernames, these will be updated after API call
-    leetcode: "rishi_nukala",
-    codechef: "rishi_nukala",
+    leetcode: "rishi_nukala", // Placeholder username for Leetcode
   });
-  const [loading, setLoading] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    const fetchUsernames = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/getUsernames"); // Your backend API endpoint
-        setUsernames(response.data); // Assuming the response contains { gfg, leetcode, codechef }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching usernames:", error);
-        setLoading(false);
+  const handleLeetcodeButtonClick = async () => {
+    setLoading(true);
+    setMessage(""); // Reset message on button click
+    try {
+      const response = await axios.get(`https://leetcode-stats-api.herokuapp.com/${usernames.leetcode}`);
+      if (response.data) {
+        setProfileData(response.data);
+        console.log(response.data); // Optional logging for debugging
+      } else {
+        setMessage("No profile data found for this username.");
       }
-    };
-
-    fetchUsernames();
-  }, []);
-
-  const handleProfileSelect = (profile) => {
-    setSelectedProfile(profile);
+    } catch (error) {
+      // Handle various types of errors gracefully
+      if (error.response) {
+        // The request was made, but the server responded with a status other than 2xx
+        setMessage(`Error: ${error.response.status} - ${error.response.data}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        setMessage("No response received from the server.");
+      } else {
+        // Something happened in setting up the request
+        setMessage(`Request failed: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
-
-  if (loading) {
-    return <p>Loading profiles...</p>;
-  }
 
   return (
     <div className="container mt-4">
       <h2>Select Coding Profiles</h2>
-
       <div>
-        <button
-          onClick={() => handleProfileSelect("GFG")}
-          className="btn btn-primary mx-2"
-        >
-          GeeksforGeeks
-        </button>
-        <button
-          onClick={() => handleProfileSelect("LeetCode")}
-          className="btn btn-secondary mx-2"
-        >
-          LeetCode
-        </button>
-        <button
-          onClick={() => handleProfileSelect("CodeChef")}
-          className="btn btn-success mx-2"
-        >
-          CodeChef
+        <button onClick={handleLeetcodeButtonClick} className="btn btn-primary mx-2">
+          Leetcode
         </button>
       </div>
 
-      <div className="mt-4">
-        {selectedProfile === "GFG" && <GFG username={usernames.gfg} />}
-        {selectedProfile === "LeetCode" && <LeetCode username={usernames.leetcode} />}
-        {selectedProfile === "CodeChef" && <CodeChef username={usernames.codechef} />}
-      </div>
+      {loading && <p>Loading profile...</p>}
+
+      {message && <p className="text-center text-danger">{message}</p>}
+
+      {profileData && (
+        <div className="mt-4">
+          <h3>Leetcode Profile</h3>
+          <div>
+            <p><strong>Total Solved Problems:</strong> {profileData.totalSolved}</p>
+            <p><strong>Total Questions:</strong> {profileData.totalQuestions}</p>
+            <p><strong>Easy Solved:</strong> {profileData.easySolved}</p>
+            <p><strong>Medium Solved:</strong> {profileData.mediumSolved}</p>
+            <p><strong>Hard Solved:</strong> {profileData.hardSolved}</p>
+            <p><strong>Acceptance Rate:</strong> {profileData.acceptanceRate}%</p>
+            <p><strong>Ranking:</strong> {profileData.ranking}</p>
+            <p><strong>Reputation:</strong> {profileData.reputation}</p>
+            <p><strong>Contribution Points:</strong> {profileData.contributionPoints}</p>
+
+            <h4>Submission Calendar:</h4>
+            <ul>
+              {Object.keys(profileData.submissionCalendar).map((timestamp, index) => {
+                const date = new Date(parseInt(timestamp) * 1000);
+                const formattedDate = date.toLocaleDateString();
+                return (
+                  <li key={index}>
+                    Date: {formattedDate} - Submissions: {profileData.submissionCalendar[timestamp]}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default function GFG() {
       setLoading(true);
       try {
         // Fetch the entire data from the API
-        const response = await axios.get("http://localhost:5000/api/profile/coding-profiles");
+        const response = await axios.get("https://geeks-for-geeks-api.vercel.app/rishi_nukala");
         
         // Log the full response to inspect the structure
         console.log(response.data); // This will print the full data to the console
