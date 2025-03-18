@@ -37,4 +37,5 @@ const usernames = {
   app.get("/api/getUsernames", (req, res) => {
     res.json(usernames); // Return the usernames object as a JSON response
   });
+  
 app.listen(port,()=>console.log("Server is running on port:",port))

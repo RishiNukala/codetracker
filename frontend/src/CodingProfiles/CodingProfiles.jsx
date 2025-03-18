@@ -14,7 +14,7 @@ export default function CodingProfiles() {
     setMessage(""); // Reset message on button click
     try {
       const response = await axios.get(`https://leetcode-stats-api.herokuapp.com/${usernames.leetcode}`);
-      if (response.data) {
+      if (response.data && response.data.status === "success") {
         setProfileData(response.data);
         console.log(response.data); // Optional logging for debugging
       } else {

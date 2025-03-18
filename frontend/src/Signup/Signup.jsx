@@ -33,12 +33,14 @@ export default function Signup() {
         alert(err.response?.data?.message || "Signup failed. Please try again.");
       });
   }
-  
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
-        <h2 className="text-center mb-4">Sign Up</h2>
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{ backgroundColor: "#1e1e1e", color: "#000"}}
+    >
+      <div className="p-5 shadow-lg rounded-4" style={{ width: "400px", background: "#fff",marginTop:"-150px" }}>
+        <h2 className="text-center mb-4 fw-bold">Sign Up</h2>
         <form onSubmit={handleSignup}>
           <div className="mb-3">
             <label className="form-label">Username</label>
@@ -74,7 +76,7 @@ export default function Signup() {
             />
           </div>
           <button type="submit" className="btn btn-primary w-100">
-            Signup
+            Sign Up
           </button>
         </form>
       </div>

@@ -7,9 +7,11 @@ import Signup from "./Signup/Signup";
 import Login from "./Login/Login";
 import CodingProfiles from "./CodingProfiles/CodingProfiles";
 import Contests from "./Contests/Contests";
+import Resources from "./Resources/Resources"; // Import the Resources component
+
 function AnimatedRoutes() {
   const location = useLocation();
-  
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -18,6 +20,7 @@ function AnimatedRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/add-coding-profiles" element={<CodingProfiles />} />
         <Route path="/upcoming-contests" element={<Contests />} />
+        <Route path="/resources" element={<Resources />} /> {/* New Resources Route */}
       </Routes>
     </AnimatePresence>
   );
