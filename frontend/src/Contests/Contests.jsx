@@ -41,11 +41,11 @@ export default function Contests() {
           background: "#fff",
           width: "100%",
           maxWidth: "990px",
-          minHeight: "500px",
-          marginTop:"-70px"
+          minHeight: "400px",
+          marginTop:"-30px"
         }}
       >
-        <h2 className="text-center mb-4 fw-bold">Upcoming Contests</h2>
+        <h2 className="text-center mb-3 fw-bold">Upcoming Contests</h2>
         {loading ? (
           <p className="text-center">Loading contests...</p>
         ) : (

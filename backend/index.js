@@ -38,4 +38,4 @@ const usernames = {
     res.json(usernames); // Return the usernames object as a JSON response
   });
   
-app.listen(port,()=>console.log("Server is running on port:",port))
+app.listen(port,()=>console.log("Server is running on port:",port)) 

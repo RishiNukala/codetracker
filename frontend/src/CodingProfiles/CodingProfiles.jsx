@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 export default function CodingProfiles() {
   const [usernames, setUsernames] = useState({
@@ -11,25 +12,22 @@ export default function CodingProfiles() {
 
   const handleLeetcodeButtonClick = async () => {
     setLoading(true);
-    setMessage(""); // Reset message on button click
+    setMessage("");
     try {
-      const response = await axios.get(`https://leetcode-stats-api.herokuapp.com/${usernames.leetcode}`);
+      const response = await axios.get(
+        `https://leetcode-stats-api.herokuapp.com/${usernames.leetcode}`
+      );
       if (response.data && response.data.status === "success") {
         setProfileData(response.data);
-        console.log(response.data); // Optional logging for debugging
       } else {
         setMessage("No profile data found for this username.");
       }
     } catch (error) {
-      // Handle various types of errors gracefully
       if (error.response) {
-        // The request was made, but the server responded with a status other than 2xx
         setMessage(`Error: ${error.response.status} - ${error.response.data}`);
       } else if (error.request) {
-        // The request was made but no response was received
         setMessage("No response received from the server.");
       } else {
-        // Something happened in setting up the request
         setMessage(`Request failed: ${error.message}`);
       }
     } finally {
@@ -38,47 +36,49 @@ export default function CodingProfiles() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Select Coding Profiles</h2>
-      <div>
-        <button onClick={handleLeetcodeButtonClick} className="btn btn-primary mx-2">
-          Leetcode
-        </button>
-      </div>
+    <motion.div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{ backgroundColor: "#1e1e1e", color: "white", padding: "25px" }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+    >
+      <div
+        className="shadow-lg rounded-4 p-4 d-flex flex-column align-items-center"
+        style={{
+          background: "#fff",
+          color: "#000",
+          width: "100%",
+          maxWidth: "900px",
+          minHeight: "500px",
+          marginTop: "-100px",
+          textAlign: "justify"
+        }}
+      >
+        <h2 className="text-center mb-3 fw-bold" style = {{marginTop:"4px"}}>Select Coding Profiles</h2>
+        <div className="text-center mb-3" style = {{marginTop:"10px"}}>
+          <button className="btn" style={{ backgroundColor: "orange", color: "white", fontWeight: "bold" }} onClick={handleLeetcodeButtonClick}>Leetcode</button>
+          <button className="btn btn-success mx-2" style={{ fontWeight: "bold" }}>GeeksforGeeks</button>
+          <button className="btn" style={{ backgroundColor: "#6E260E", color: "white", fontWeight: "bold" }}>CodeChef</button>
+        </div>
 
-      {loading && <p>Loading profile...</p>}
+        {loading && <p className="text-center">Loading profile...</p>}
+        {message && <p className="text-center text-danger">{message}</p>}
 
-      {message && <p className="text-center text-danger">{message}</p>}
-
-      {profileData && (
-        <div className="mt-4">
-          <h3>Leetcode Profile</h3>
-          <div>
+        {profileData && (
+          <div className="mt-4 text-justify" style={{ width: "100%" }}>
+            <div  style={{ width: "100%",marginLeft:"260px",marginTop:"-10px"}}>
             <p><strong>Total Solved Problems:</strong> {profileData.totalSolved}</p>
-            <p><strong>Total Questions:</strong> {profileData.totalQuestions}</p>
             <p><strong>Easy Solved:</strong> {profileData.easySolved}</p>
             <p><strong>Medium Solved:</strong> {profileData.mediumSolved}</p>
             <p><strong>Hard Solved:</strong> {profileData.hardSolved}</p>
             <p><strong>Acceptance Rate:</strong> {profileData.acceptanceRate}%</p>
             <p><strong>Ranking:</strong> {profileData.ranking}</p>
             <p><strong>Reputation:</strong> {profileData.reputation}</p>
-            <p><strong>Contribution Points:</strong> {profileData.contributionPoints}</p>
-
-            <h4>Submission Calendar:</h4>
-            <ul>
-              {Object.keys(profileData.submissionCalendar).map((timestamp, index) => {
-                const date = new Date(parseInt(timestamp) * 1000);
-                const formattedDate = date.toLocaleDateString();
-                return (
-                  <li key={index}>
-                    Date: {formattedDate} - Submissions: {profileData.submissionCalendar[timestamp]}
-                  </li>
-                );
-              })}
-            </ul>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </motion.div>
   );
 }
