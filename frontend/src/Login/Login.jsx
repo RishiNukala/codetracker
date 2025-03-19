@@ -16,7 +16,7 @@ export default function Login() {
   function handleLogin(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/auth/login", formData)
+      .post("https://codetracker-2-kimn.onrender.com/api/auth/login", formData)
       .then((res) => {
         console.log("Login Response:", res);
         if (res.status === 200) {

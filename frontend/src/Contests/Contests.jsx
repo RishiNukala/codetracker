@@ -15,17 +15,15 @@ export default function Contests() {
         const response = await axios.get("https://competeapi.vercel.app/contests/upcoming/");
         setContests(response.data);
         sessionStorage.setItem("contests", JSON.stringify(response.data));
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching contests:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    if (contests.length === 0) {
-      fetchContests();
-    }
-  }, [contests]);
+    fetchContests(); // Fetch only once on mount
+  }, []); // Empty dependency array ensures it runs only once
 
   return (
     <motion.div
@@ -42,7 +40,7 @@ export default function Contests() {
           width: "100%",
           maxWidth: "990px",
           minHeight: "400px",
-          marginTop:"-30px"
+          marginTop: "-30px"
         }}
       >
         <h2 className="text-center mb-3 fw-bold">Upcoming Contests</h2>
@@ -62,24 +60,16 @@ export default function Contests() {
               </thead>
               <tbody>
                 {contests.map((contest, index) => {
-                  let hours, minutes;
-                  if (contest.site.toLowerCase() === "leetcode") {
-                    hours = 1;
-                    minutes = 30;
-                  } else {
-                    const durationInSeconds = contest.duration;
-                    hours = Math.floor(durationInSeconds / 3600000);
-                    minutes = Math.floor((durationInSeconds % 3600000) / 60000);
-                  }
+                  const durationInSeconds = contest.duration;
+                  const hours = Math.floor(durationInSeconds / 3600);
+                  const minutes = Math.floor((durationInSeconds % 3600) / 60);
 
                   return (
                     <tr key={index}>
                       <td>{contest.title}</td>
                       <td>{contest.site}</td>
                       <td>{moment(contest.startTime).format("MMMM Do YYYY, h:mm A")}</td>
-                      <td>
-                        {hours} hrs {minutes} mins
-                      </td>
+                      <td>{hours} hrs {minutes} mins</td>
                       <td>
                         <a
                           href={contest.url}
