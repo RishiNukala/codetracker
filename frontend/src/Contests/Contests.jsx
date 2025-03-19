@@ -12,7 +12,7 @@ export default function Contests() {
   useEffect(() => {
     const fetchContests = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/contests/upcoming-contests");
+        const response = await axios.get("https://competeapi.vercel.app/contests/upcoming/");
         setContests(response.data);
         sessionStorage.setItem("contests", JSON.stringify(response.data));
         setLoading(false);
