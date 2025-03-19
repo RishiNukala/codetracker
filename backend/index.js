@@ -26,16 +26,4 @@ app.get("/api/protected", authMiddleware, (req, res) => {
     res.json({ message: "This is a protected route!", user: req.user });
 });
 
-// Example Express API to fetch usernames from the database
-const usernames = {
-    gfg: "rishi_nukala",
-    leetcode: "rishi_nukala",
-    codechef: "rishi_nukala",
-  };
-  
-  // Endpoint to fetch usernames
-  app.get("/api/getUsernames", (req, res) => {
-    res.json(usernames); // Return the usernames object as a JSON response
-  });
-  
-app.listen(port,()=>console.log("Server is running on port:",port)) 
+app.listen(port,()=>console.log("Server is running on port:",port))
