@@ -21,7 +21,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/profile",profileRoutes)
 app.use("/api/streak", streakRoutes)
 app.use("/api/contests", contestRoutes)
-app.use("/api/resources/:type",resourcesRoutes)
+app.use("/api/resources",resourcesRoutes)
 app.get("/api/protected", authMiddleware, (req, res) => {
     res.json({ message: "This is a protected route!", user: req.user });
 });

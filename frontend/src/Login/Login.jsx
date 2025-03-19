@@ -16,7 +16,7 @@ export default function Login() {
   function handleLogin(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/auth/login", formData)
+      .post("https://codetracker-2-kimn.onrender.com/api/auth/login", formData)
       .then((res) => {
         console.log("Login Response:", res);
         if (res.status === 200) {
@@ -25,7 +25,7 @@ export default function Login() {
           setUser({ token });
 
           axios
-            .get("http://localhost:5000/api/coding-profiles", {
+            .get("https://codetracker-2-kimn.onrender.com/api/coding-profiles", {
               headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {

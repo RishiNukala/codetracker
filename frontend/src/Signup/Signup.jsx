@@ -20,7 +20,7 @@ export default function Signup() {
   function handleSignup(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/auth/signup", formData)
+      .post("https://codetracker-2-kimn.onrender.com/api/auth/signup", formData)
       .then((res) => {
         console.log("Signup Response:", res);
         if (res.status === 201) {
