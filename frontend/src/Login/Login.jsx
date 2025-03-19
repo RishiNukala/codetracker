@@ -25,7 +25,7 @@ export default function Login() {
           setUser({ token });
 
           axios
-            .get("https://codetracker-2-kimn.onrender.com/api/coding-profiles", {
+            .get("http://localhost:5000/api/coding-profiles", {
               headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {
